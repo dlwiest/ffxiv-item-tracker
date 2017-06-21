@@ -8,16 +8,15 @@ export default App = () => {
   return (
     <span>
       <PageHeader>Stormblood Overworld Item Tracker</PageHeader>
-      <p>Track new gathered items and drops by adding them here as we find them. Items will appear in real time as they're added.</p>
       <Tabs defaultActiveKey={1} id="table-tabs" mountOnEnter>
-        <Tab eventKey={1} title="Mob Drops" >
-          <MobDropsTab />
+        <Tab eventKey={1} title="Timed Nodes">
+          <TimedNodesTab />
         </Tab>
-        <Tab eventKey={3} title="Gathering Nodes">
+        <Tab eventKey={2} title="Gathering Nodes">
           <GatheringNodesTab />
         </Tab>
-        <Tab eventKey={2} title="Timed Nodes">
-          <TimedNodesTab />
+        <Tab eventKey={3} title="Mob Drops" >
+          <MobDropsTab />
         </Tab>
       </Tabs>
     </span>
