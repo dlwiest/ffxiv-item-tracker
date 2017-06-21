@@ -3,7 +3,8 @@ import PageHeader from 'react-bootstrap/lib/PageHeader';
 import Tabs from 'react-bootstrap/lib/Tabs';
 import Tab from 'react-bootstrap/lib/Tab';
 import { EorzeaClock } from './components';
-import { MobDropsTab, TimedNodesTab, GatheringNodesTab } from './components/tabs';
+import { MobDropsTab, GatheringNodesTab } from './components/tabs';
+import { TimedNodesTab } from './components/tabs/TimedNodes'
 
 export default App = () => {
   return (
