@@ -3,18 +3,25 @@ import { Row, Col, Panel } from 'react-bootstrap';
 import moment from 'moment';
 import EorzeaTime from 'eorzea-time';
 
-class EorzeaClock extends PureComponent {
+export default class EorzeaClock extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      eorzeaTime: 'hurble',
+      eorzeaTime: '',
     };
   }
 
   setTime() {
     const eorzeaTime = new EorzeaTime();
-    this.setState({ eorzeaTime: moment(eorzeaTime.toString(), 'HH:mm:SS').format('hh:mma') });
+    const eorzeaTimeMoment = moment(eorzeaTime.toString(), 'HH:mm:SS');
+
+    let lastWindow = Number(eorzeaTimeMoment.format('h'));
+    if (lastWindow % 2 !== 0) lastWindow -= 1;
+    if (!lastWindow) lastWindow = 12;
+    this.props.setLastNodeWindow(lastWindow);
+
+    this.setState({ eorzeaTime: eorzeaTimeMoment.format('hh:mma') });
   }
 
   componentWillMount() {
@@ -37,4 +44,6 @@ class EorzeaClock extends PureComponent {
   }
 }
 
-export default EorzeaClock;
+EorzeaClock.defaultProps = {
+  setLastNodeWindow: () => {},
+};

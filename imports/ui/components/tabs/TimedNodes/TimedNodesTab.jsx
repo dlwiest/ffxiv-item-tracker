@@ -22,13 +22,21 @@ class TimedNodesTab extends PureComponent {
 
   filterNodes(nodes) {
     const { form: { showMiner, showBotanist, showUnspoiled, showEphemeral, showFolklore } } = this.state;
+    const { lastWindow } = this.props;
+
+    // Handle filter checkboxes
     const filtered = _.filter(nodes, node => {
       return (((showMiner && node.job === 'MIN') || (showBotanist && node.job === 'BTN')) &&
         ((showUnspoiled && node.type === 'Unspoiled') || (showEphemeral && node.type === 'Ephemeral') || (showFolklore && node.type === 'Folklore')));
     });
+
+    // Sort by time, beginning with the most recent active window
     const sorted = _.sortBy(filtered, node => {
-      return node.time.split(':')[0];
+      let hour = Number(node.time.split(':')[0]);
+      if (hour < lastWindow) hour += 12;
+      return hour;
     });
+
     return sorted;
   }
 
@@ -43,7 +51,7 @@ class TimedNodesTab extends PureComponent {
     if (this.props.loading) return <Row><Col sm={12}><p>Loading...</p></Col></Row>;
 
     const { form: { showMiner, showBotanist, showUnspoiled, showEphemeral, showFolklore } } = this.state;
-    const { timedNodes } = this.props;
+    const { timedNodes, lastWindow } = this.props;
     const filteredNodes = this.filterNodes(timedNodes);
 
     return (
@@ -78,6 +86,7 @@ class TimedNodesTab extends PureComponent {
           <Col sm={12}>
             <TimedNodesTable
               rows={filteredNodes}
+              lastWindow={lastWindow}
             />
           </Col>
         </Row>

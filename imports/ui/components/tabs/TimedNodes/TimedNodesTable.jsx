@@ -2,7 +2,16 @@ import React, { Component } from 'react';
 import { Table, Label } from 'react-bootstrap';
 
 export default class TimedNodesTable extends Component {
-  static formatRow(row) {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+    };
+  }
+
+  formatRow(row) {
+    const { lastWindow } = this.props;
+
     return (
       <tr key={row._id}>
         <td>{row.itemName}</td>
@@ -15,14 +24,6 @@ export default class TimedNodesTable extends Component {
       </tr>
     );
   }
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-    };
-  }
-
 
   render() {
     const { rows } = this.props;
@@ -42,7 +43,7 @@ export default class TimedNodesTable extends Component {
           </tr>
         </thead>
         <tbody>
-          {rows.map(( row ) => TimedNodesTable.formatRow(row))}
+          {rows.map(( row ) => this.formatRow(row))}
         </tbody>
       </Table>
     );
@@ -51,4 +52,5 @@ export default class TimedNodesTable extends Component {
 
 TimedNodesTable.defaultProps = {
   rows: [],
+  lastWindow: 0,
 };
