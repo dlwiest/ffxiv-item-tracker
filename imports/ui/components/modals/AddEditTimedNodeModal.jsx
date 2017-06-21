@@ -13,7 +13,10 @@ export default class AddEditTimedNodeModal extends PureComponent {
   static formatTime(time) {
     let hours = time.split(':')[0];
     if (hours === '00') hours = 12;
-    else if (hours > 12) hours -= 12;
+    else if (hours > 12) {
+      hours -= 12;
+      if (hours.toString().length < 2) hours = '0' + hours;
+    }
     return hours + ':00';
   }
 
@@ -97,13 +100,13 @@ export default class AddEditTimedNodeModal extends PureComponent {
             <Row>
               <Col sm={12}>
                 <FormGroup controlId="item-name">
-                  <ControlLabel>Item Name</ControlLabel>
+                  <ControlLabel><span className="text-danger">* </span>Item Name</ControlLabel>
                   <FormControl type="text" value={itemName} onChange={bindFunc(this, 'setFormInput', 'itemName')} />
                 </FormGroup>
               </Col>
               <Col sm={6}>
                 <FormGroup controlId="job">
-                  <ControlLabel>Job</ControlLabel>
+                  <ControlLabel><span className="text-danger">*< /span>Job</ControlLabel>
                   <FormControl componentClass="select" value={job} onChange={bindFunc(this, 'setFormInput', 'job')}>
                     <option value="">Select a Job</option>
                     <option value="BTN">Botanist</option>
@@ -113,13 +116,13 @@ export default class AddEditTimedNodeModal extends PureComponent {
               </Col>
               <Col sm={6}>
                 <FormGroup controlId="level">
-                  <ControlLabel>Level</ControlLabel>
+                  <ControlLabel><span className="text-danger">* </span>Level</ControlLabel>
                   <FormControl type="number" value={level} onChange={bindFunc(this, 'setFormInput', 'level')} />
                 </FormGroup>
               </Col>
               <Col sm={6}>
                 <FormGroup controlId="type">
-                  <ControlLabel>Type</ControlLabel>
+                  <ControlLabel><span className="text-danger">* </span>Type</ControlLabel>
                   <FormControl componentClass="select" value={type} onChange={bindFunc(this, 'setFormInput', 'type')}>
                     <option value="">Select a Node Type</option>
                     <option value="Unspoiled">Unspoiled</option>
@@ -130,13 +133,13 @@ export default class AddEditTimedNodeModal extends PureComponent {
               </Col>
               <Col sm={6}>
                 <FormGroup controlId="time">
-                  <ControlLabel>Time</ControlLabel>
+                  <ControlLabel><span className="text-danger">* </span>Time</ControlLabel>
                   <FormControl type="time" step="3600" value={time} onChange={bindFunc(this, 'setFormInput', 'time')} />
                 </FormGroup>
               </Col>
               <Col sm={12}>
                 <FormGroup>
-                  <ControlLabel controlId="map">Map</ControlLabel>
+                  <ControlLabel controlId="map"><span className="text-danger">* </span>Map</ControlLabel>
                   <FormControl type="text" value={map} onChange={bindFunc(this, 'setFormInput', 'map')} />
                 </FormGroup>
               </Col>
@@ -154,7 +157,7 @@ export default class AddEditTimedNodeModal extends PureComponent {
               </Col>
               <Col sm={4}>
                 <FormGroup>
-                  <ControlLabel controlId="slot">Slot</ControlLabel>
+                  <ControlLabel controlId="slot"><span className="text-danger">* </span>Slot</ControlLabel>
                   <FormControl type="number" value={slot} max="8" onChange={bindFunc(this, 'setFormInput', 'slot')} />
                 </FormGroup>
               </Col>
