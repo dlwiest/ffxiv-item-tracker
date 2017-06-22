@@ -51,7 +51,7 @@ class TimedNodesTab extends PureComponent {
     if (this.props.loading) return <Row><Col sm={12}><p>Loading...</p></Col></Row>;
 
     const { form: { showMiner, showBotanist, showUnspoiled, showEphemeral, showFolklore } } = this.state;
-    const { timedNodes, lastWindow } = this.props;
+    const { timedNodes, lastHour, lastWindow } = this.props;
     const filteredNodes = this.filterNodes(timedNodes);
 
     return (
@@ -87,6 +87,7 @@ class TimedNodesTab extends PureComponent {
             <TimedNodesTable
               rows={filteredNodes}
               lastWindow={lastWindow}
+              lastHour={lastHour}
             />
           </Col>
         </Row>

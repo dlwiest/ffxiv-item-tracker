@@ -11,8 +11,13 @@ export default class App extends PureComponent {
     super();
 
     this.state = {
+      lastHour: null,
       lastNodeWindow: null,
     };
+  }
+
+  setLastHour(hour) {
+    this.setState({ lastHour: hour });
   }
 
   setLastNodeWindow(hour) {
@@ -20,14 +25,17 @@ export default class App extends PureComponent {
   }
 
   render() {
-    const { lastNodeWindow } = this.state;
+    const { lastHour, lastNodeWindow } = this.state;
     return (
       <div>
-        <EorzeaClock setLastNodeWindow={this.setLastNodeWindow.bind(this)} />
+        <EorzeaClock
+          setLastHour={this.setLastHour.bind(this)}
+          setLastNodeWindow={this.setLastNodeWindow.bind(this)}
+        />
         <PageHeader>Stormblood Overworld Item Tracker</PageHeader>
         <Tabs defaultActiveKey={1} id="table-tabs" mountOnEnter>
           <Tab eventKey={1} title="Timed Nodes">
-            <TimedNodesTab lastWindow={lastNodeWindow} />
+            <TimedNodesTab lastHour={lastHour} lastWindow={lastNodeWindow} />
           </Tab>
           <Tab eventKey={2} title="Gathering Nodes">
             <GatheringNodesTab />

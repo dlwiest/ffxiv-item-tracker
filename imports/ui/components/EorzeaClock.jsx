@@ -20,6 +20,7 @@ export default class EorzeaClock extends PureComponent {
     if (lastWindow % 2 !== 0) lastWindow -= 1;
     if (!lastWindow) lastWindow = 12;
     this.props.setLastNodeWindow(lastWindow);
+    this.props.setLastHour(Number(eorzeaTimeMoment.format('h')));
 
     this.setState({ eorzeaTime: eorzeaTimeMoment.format('hh:mma') });
   }
@@ -45,5 +46,6 @@ export default class EorzeaClock extends PureComponent {
 }
 
 EorzeaClock.defaultProps = {
+  setLastHour: () => {},
   setLastNodeWindow: () => {},
 };
