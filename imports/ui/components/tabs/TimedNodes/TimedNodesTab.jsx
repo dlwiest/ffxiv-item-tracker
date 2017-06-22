@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Row, Col, Panel, Form, FormGroup, Checkbox } from 'react-bootstrap';
+import { Row, Col, Panel, Form, FormGroup, Checkbox, Well } from 'react-bootstrap';
 import { createContainer } from 'meteor/react-meteor-data';
 import { TimedNodes } from '/imports/api/collections';
 import TimedNodesTable from './TimedNodesTable';
@@ -33,7 +33,7 @@ class TimedNodesTab extends PureComponent {
     // Sort by time, beginning with the most recent active window
     const sorted = _.sortBy(filtered, node => {
       let hour = Number(node.time.split(':')[0]);
-      if (hour < lastWindow) hour += 12;
+      if ((node.type !== 'Ephemeral' && hour < lastWindow) || (node.type === 'Ephemeral' && (hour + 2) < lastWindow)) hour += 12;
       return hour;
     });
 
@@ -60,27 +60,37 @@ class TimedNodesTab extends PureComponent {
           <Col sm={12}><br /><p>Items that can only be gathered during specific windows Eorzea Time.</p></Col>
         </Row>
         <Panel>
-          <Form>
-            <Row>
-              <Col sm={1}><strong>Job:</strong></Col>
-              <Col sm={11}>
-                <FormGroup>
-                  <Checkbox inline checked={showBotanist} onChange={bindFunc(this, 'toggleCheckbox', 'showBotanist')}>Botanist</Checkbox>
-                  <Checkbox inline checked={showMiner} onChange={bindFunc(this, 'toggleCheckbox', 'showMiner')}>Miner</Checkbox>
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={1}><strong>Nodes:</strong></Col>
-              <Col sm={11}>
-                <FormGroup>
-                  <Checkbox inline checked={showUnspoiled} onChange={bindFunc(this, 'toggleCheckbox', 'showUnspoiled')}>Unspoiled</Checkbox>
-                  <Checkbox inline checked={showEphemeral} onChange={bindFunc(this, 'toggleCheckbox', 'showEphemeral')}>Ephemeral</Checkbox>
-                  <Checkbox inline checked={showFolklore} onChange={bindFunc(this, 'toggleCheckbox', 'showFolklore')}>Folklore</Checkbox>
-                </FormGroup>
-              </Col>
-            </Row>
-          </Form>
+          <Row>
+            <Col sm={9}>
+              <Form>
+                <Row>
+                  <Col sm={2}><strong>Job:</strong></Col>
+                  <Col sm={10}>
+                    <FormGroup>
+                      <Checkbox inline checked={showBotanist} onChange={bindFunc(this, 'toggleCheckbox', 'showBotanist')}>Botanist</Checkbox>
+                      <Checkbox inline checked={showMiner} onChange={bindFunc(this, 'toggleCheckbox', 'showMiner')}>Miner</Checkbox>
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col sm={2}><strong>Nodes:</strong></Col>
+                  <Col sm={10}>
+                    <FormGroup>
+                      <Checkbox inline checked={showUnspoiled} onChange={bindFunc(this, 'toggleCheckbox', 'showUnspoiled')}>Unspoiled</Checkbox>
+                      <Checkbox inline checked={showEphemeral} onChange={bindFunc(this, 'toggleCheckbox', 'showEphemeral')}>Ephemeral</Checkbox>
+                      <Checkbox inline checked={showFolklore} onChange={bindFunc(this, 'toggleCheckbox', 'showFolklore')}>Folklore</Checkbox>
+                    </FormGroup>
+                  </Col>
+                </Row>
+              </Form>
+            </Col>
+            <Col sm={3}>
+              <strong>Legend:</strong><br />
+              <span className="text-success">{`Expires in less than 4 hours`}</span><br />
+              <span className="text-warning">{`Expires in less than 2 hours`}</span><br />
+              <span className="text-danger">{`Expires in less than 1 hour`}</span><br />
+            </Col>
+          </Row>
         </Panel>
         <Row>
           <Col sm={12}>
@@ -101,6 +111,6 @@ export default TimedNodesTabContainer = createContainer(() => {
 
   return {
     loading: !subHandle.ready(),
-    timedNodes: TimedNodes.find().fetch()
+    timedNodes: TimedNodes.find({}, {sort: { type: -1 }}).fetch(),
   }
 }, TimedNodesTab);
